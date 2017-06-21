@@ -29,7 +29,8 @@ def download_page_with_articles(url):
     Returns:
         page_source: html source of whole page
     """
-    print('Opening browser.')
+    print('-'*50)
+    print('Opening browser...\n')
     browser = Chrome(executable_path="./chromedriver")  # open browser
     browser.get(url)  # get page
 
@@ -44,9 +45,10 @@ def download_page_with_articles(url):
         except Exception as e:
             print(e)
             sleep(30)
-    print('Closing browser.')
     page_source = browser.page_source  # get source page
     browser.quit()
+    print('\nClosing browser.')
+    print('-'*50)
     return page_source
 page_source = download_page_with_articles(url=URL + 'clanky/')
 
@@ -97,7 +99,8 @@ def download_articles(df):
     Returns:
         df: pandas DataFrame with columns=['date', 'link', 'title', 'text']
     """
-    print('Downloading each article...')
+    print('-'*50)
+    print('Downloading each article...\n')
     speeches = []
     for speech_link in df['link'].values:  # for every link to article
         try:
@@ -113,9 +116,11 @@ def download_articles(df):
         speech = speech.replace(u'\xa0', u' ')  # replace hard space tag
         speeches.append(speech)
     df['text'] = speeches  # add to DataFrame
+    print('\nArticles downloaded.')
+    print('-'*50)
     return df
+
 df = download_articles(df=df)
-print('Done.')
 
 # save to csv
 df.to_csv('./speeches.csv', encoding='utf8', index=False, sep=';')
